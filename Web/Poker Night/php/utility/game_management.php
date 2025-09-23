@@ -26,6 +26,7 @@
             //fold, allin
             $this->cards = [];
         }
+
         public function takeCards(&$deck){
             for($i=0;$i<2;$i++)
                 $this->cards[]=array_pop($deck);
@@ -40,6 +41,7 @@
                 'c'=>$this->cards
             ]);
         }
+
         public function unserialize($serialized_player){
             $player = unserialize($serialized_player);
             $this->username = $player['u'];
@@ -73,11 +75,13 @@
                 $this->unserialize($room_info['stato_partita']);
             }
         }
+
         private function getId(){
             $id = $this->first_unassigned_id;
             ++$this->first_unassigned_id;
             return $id;
         }
+
         public function findNextTurn($current){
             $next = $current;
             for($i=0;$i<$this->first_unassigned_id;$i++){
@@ -90,6 +94,7 @@
             }
             return $next;
         }
+
         public function addPlayer($player_info){
             $player = new Player($player_info);
             $id = $this->getId();
@@ -114,6 +119,7 @@
             }
             return $players;
         }
+
         private function inizializzaDeck(){ //creo il deck e lo mischio
             $this->deck=[];
             $cards = ["A","2","3","4","5","6","7","8","9","10","Q","J","K"];
@@ -130,11 +136,13 @@
             foreach($this->player_list as $player)
                 $player->takeCards($this->deck);
         }
+
         public function dealHouseCard(){ //estrae una carta per il dealer
             $card = array_pop($this->deck);
             $this->house_cards[]=$card;
             return $card;
         }
+
         public function getAllCards(){ //estrae tutte le carte per inviarle ai giocatori alla fine di una mano
             $all_cards = [];
             foreach($this->player_list as $id => $pl){
@@ -142,6 +150,7 @@
             }
             return $all_cards;
         }
+
         public function getPot(){ // estrae il 5% dei soldi da ogni giocatore e lo aggiunge alla vincita totale, analogamente alla modifica eseguita sul database
             foreach($this->player_list as $id => $player){
                 $pot = floor($player->soldi*0.05);
@@ -150,6 +159,12 @@
             }
             if($_SESSION['soldi']>0)
                 $_SESSION['soldi'] -= floor($_SESSION['soldi']*0.05);
+        }
+
+        public function setEverythingUp(){
+            $this->giveCards();
+            $this->dealHouseCard();
+            $this->getPot();
         }
 
         public function checkWinner(){
@@ -303,18 +318,21 @@
             }else
                 return [];
         }
+        
         public function serialize(){
             return serialize([
                 'n'=>$this->next_move_id,
                 'm'=>$this->moves
             ]);
         }
+
         public function unserialize($serialized_history){
             $moves_history = unserialize($serialized_history);
             $this->next_move_id = $moves_history['n'];
             $this->moves = $moves_history['m'];
         }
     }
+
     function readMoves($serialized_history){ //funzione wrapper per facilitare la lettura delle mosse
         $moves=[];
         if($serialized_history !="-"){
@@ -374,6 +392,7 @@
         }
         return $move;
     }
+
     function checkGameStatus(Room $room, Storia $moves_history = null){
         $status = $room->checkPlayers(); //ottengo il numero di giocatori nei vari stati
         $is_over = false;
@@ -394,11 +413,6 @@
                     else
                         $dealer_cards[]=$hcard;
                 }
-                /* //credo ridondante, da testare
-                foreach($room->player_list as $pl){ //resetto lo stato dei giocatori
-                    $pl->status="wait";
-                }
-                */
                 $is_over=true;
             }else{
                 $room->round++;
@@ -459,6 +473,7 @@
         mysqli_close($connection);
         return $result;
     }
+
     function updateWinnerMoney($player,$winnings){ //funzione chiamata nel caso io non sia il vincitore (in quel caso ci pensa setStateAndTurn() ad aggiornare i soldi)
         $username = $player->username;              // utilizzo una funzione separata per il caso in cui il vincitore esce dalla stanza prima della vincita, dunque il join
         $player->soldi += $winnings;                // con la tupla della stanza fallirebbe e non aggiornerei le informazioni
@@ -597,6 +612,7 @@
 
         return $risultato;
     }
+
     //true se vince contender, false se vince winner
     function compareAlta($c_hand,$w_hand){      //confronta la carta piu alta, se uguali confronta la bassa, altrimenti i semi della piu alta
         return ($c_hand['ALTA']>$w_hand['ALTA'] ||
@@ -604,5 +620,26 @@
                 ($c_hand['BASSA']>$w_hand['BASSA'] || 
                 ($c_hand['BASSA']===$w_hand['BASSA'] &&
                 $c_hand['seme']>$w_hand['seme']))));
+    }
+
+    function hijackSession($full_info){ // impersono un giocatore per farlo foldare
+        if(isset($_SESSION['MY_ID']))
+            $_SESSION['TRUE_ID'] = $_SESSION['MY_ID'];
+        $_SESSION['TRUE_username'] = $_SESSION['username'];
+
+        $state=unserialize($full_info['stato_partita']);
+        $_SESSION['MY_ID'] = $full_info['turn'];
+        $room = new Room($full_info);
+        $_SESSION['username'] = $room->player_list[$full_info['turn']]->username;
+        $_GET['move']="fold";
+        unset($_GET['info']);
+    }
+
+    function restoreSession(){ //ripristino le mie informazioni
+        if(isset($_SESSION['TRUE_ID']))
+            $_SESSION['MY_ID'] = $_SESSION['TRUE_ID'];
+        $_SESSION['username'] = $_SESSION['TRUE_username'];
+        unset($_SESSION['TRUE_ID']);
+        unset($_SESSION['TRUE_username']);
     }
 ?>

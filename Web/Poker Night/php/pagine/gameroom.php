@@ -8,12 +8,12 @@
 
     session_start();
     if(!isset($_SESSION['username'])) {
-        header("Location: /index.php");
+        header("Location: /php/pagine/home.php");
         exit();
     }
     $full_info = getInfo($_SESSION['username'],"all");
     if(!$full_info){
-        header("Location: /index.php");
+        header("Location: /php/pagine/home.php");
         exit();
     }
     if($_SESSION['ROOM_TYPE']=="multi"){
@@ -50,8 +50,9 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang = "it">
     <head>
+        <meta name = "author" content = "Sebastiano Pala">
         <title>GameRoom</title>
         <meta charset = "utf-8">
         <link rel="stylesheet" href="../../CSS/Layout.css">
@@ -80,14 +81,14 @@
                 <?php endif; ?>
                 <div id="player_top" class="main_container top" hidden>
                     <div class="chip_container">
-                        <img src="/Assets/chips/poker-chips.png" name="stack" class="chipstack">
+                        <img src="/Assets/chips/poker-chips.png" class="chipstack" alt="stack">
                     </div>
                     <div class="card_container">
-                        <img src="/Assets/cards/backcarta.png">
-                        <img src="/Assets/cards/backcarta.png">
+                        <img src="/Assets/cards/backcarta.png" alt="card">
+                        <img src="/Assets/cards/backcarta.png" alt="card">
                     </div>
                     <div class="player_profile">
-                        <img  alt="pfp">
+                        <img src ="/Assets/profilepictures/default.png" alt="pfp">
                         <div class="player_info">
 
                         </div>
@@ -101,12 +102,12 @@
                 </div>
                 <div id="player_left" class="main_container left" hidden>
                     <div class="player_profile">
-                        <img alt="pfp">
+                        <img src ="/Assets/profilepictures/default.png" alt="pfp">
                         <div class="player_info"></div>
                     </div>
                     <div class="card_container">
-                        <img src="/Assets/cards/backcarta.png">
-                        <img src="/Assets/cards/backcarta.png">
+                        <img src="/Assets/cards/backcarta.png" alt="card">
+                        <img src="/Assets/cards/backcarta.png" alt="card">
                     </div>
                     <div class="chip_container">
                         <img src="/Assets/chips/poker-chips.png" alt="stack" class="chipstack">
@@ -128,8 +129,8 @@
                             </div>
                         </div>
                         <div class="card_container">
-                            <img src="/Assets/cards/backcarta.png">
-                            <img src="/Assets/cards/backcarta.png">
+                            <img src="/Assets/cards/backcarta.png" alt="card">
+                            <img src="/Assets/cards/backcarta.png" alt="card">
                         </div>
                         <div class="chip_container">
                             <img src="/Assets/chips/poker-chips.png" alt="stack" class="chipstack">
@@ -150,11 +151,11 @@
                         <div class="player_info">
 
                         </div>
-                        <img alt="pfp">
+                        <img src ="/Assets/profilepictures/default.png" alt="pfp">
                     </div>
                     <div class="card_container">
-                        <img src="/Assets/cards/backcarta.png">
-                        <img src="/Assets/cards/backcarta.png">
+                        <img src="/Assets/cards/backcarta.png" alt="card">
+                        <img src="/Assets/cards/backcarta.png" alt="card">
                     </div>
                     <div class="chip_container">
                         <img src="/Assets/chips/poker-chips.png" alt="stack" class="chipstack">

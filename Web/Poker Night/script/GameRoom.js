@@ -67,9 +67,11 @@ function sleep(ms,ignore_speed = false){
     }
     return new Promise((resolve)=>setTimeout(resolve,ms));
 }
+
 function cardPath(card){
     return CARD_FOLDER + card + IMG_EXT;
 }
+
 function hideEverything(){
     document.getElementById('HUD').hidden=true;
     document.getElementById('total_bet').hidden=true;
@@ -99,6 +101,7 @@ async function playGiveCardsAnimation(interval){
             await sleep(interval);
     }
 }
+
 async function addPlayerToTable(player_id,position,player_data,pfp_path){
     let player_username= player_data['u'];
     let player_soldi= player_data['s'];
@@ -148,12 +151,14 @@ function updateButtonText(){
     bet.textContent = bet_type[button_mode];
     bet.classList = ((button_mode===0)? "bet" : "raise") + " darken";
 }
+
 function checkButton(){
     clearTimer();
     returnBetToNormal();
     changeButtonState();
     waitForInfo("check");
 }
+
 function betButton(e){
     if(highest_round_bet >= myself.soldi)
         return;
@@ -170,6 +175,7 @@ function betButton(e){
     returnBetToNormal();
     changeButtonState();
 }
+
 function checkBetAmount(e){
     const betamount = e.currentTarget;
     const bet = document.getElementById('bet');
@@ -198,6 +204,7 @@ function checkBetAmount(e){
         }
     }
 }
+
 function returnBetToNormal(){
     const bet = document.getElementById('bet');
     
@@ -212,6 +219,7 @@ function returnBetToNormal(){
     bet.textContent=bet_type[button_mode];
     bet.disabled=false;
 }
+
 function foldButton(){
     clearTimer();
     returnBetToNormal();
@@ -225,9 +233,11 @@ function sendStartSignal(){
     entry.hidden=true;
     waitForInfo();
 }
+
 function changeButtonState(){
     document.getElementById('moves').querySelectorAll('button').forEach(bottone=>bottone.disabled= !bottone.disabled);
 }
+
 function timerBody(send_fold) {
     if(timer_value>=0){
         timer.textContent=timer_value--;
@@ -239,18 +249,21 @@ function timerBody(send_fold) {
         timer.textContent="";
     }
 }
+
 function startTimer(send_fold){
     if(!timer_interval){
         timer_value = time_to_wait;
         timer_interval=setTimeout(timerBody.bind(null,send_fold), 1000);
     }
 }
+
 function clearTimer(){
     clearTimeout(timer_interval);
     timer_interval=null;
     timer.textContent="";
     time_to_wait = TIMEOUT;
 }
+
 function removeAndAddGlow(who){
     const prev =document.querySelector('.player_profile img[class=isturn]');
     if(prev)
@@ -263,6 +276,7 @@ function removeAndAddGlow(who){
     else
         p.textContent="YOUR TURN";
 }
+
 function changeTurn(next){
     if(next >= 0){ //se il turno è valido, lo cambio
         if(next===my_id)
@@ -273,6 +287,7 @@ function changeTurn(next){
         turn = next;
     }
 }
+
 async function showAllCards(all_cards){
     for( const [id,cards] of all_cards.entries()){ //sostituisco tutte le carte coperte con quelle scoperte 
         let pl_cards = player_map[id].div.querySelectorAll('.card_container img');
@@ -280,6 +295,7 @@ async function showAllCards(all_cards){
     }
     await sleep(CARDS_SHOW_DELAY,true);
 }
+
 async function updateStatus(move){ //aggiorna lo stato della partita eseguendo l animazione di una mossa
     const [autore,this_move]=move; //move[0] contiene l' autore della mossa, move[1] la mossa in se
     switch (autore) { 
@@ -297,6 +313,7 @@ async function updateStatus(move){ //aggiorna lo stato della partita eseguendo l
             need_board.textContent="";
             const card = document.createElement('img');
             card.src = cardPath(move[1]);
+            card.alt = "card";
             if(!received_game_info)
                 card.style.visibility="hidden"; //necessario per il caso in cui si crea la carta prima di eseguire playGiveCardsAnimation()
             else
@@ -467,6 +484,7 @@ function inizializzaStrutturePartita(risposta){
 
     const backcard = document.createElement('img');
     backcard.src = cardPath("backcarta");
+    backcard.alt="card";
     backcard.style.visibility="hidden";
     dealer.cards.appendChild(backcard); //aggiungo una carta coperta al dealer solo per estetica
 }

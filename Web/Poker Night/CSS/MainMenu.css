@@ -55,6 +55,7 @@
     border: 4px solid brown;
 }
 #scroll_container{
+    background-color: brown;
     max-height: 450px;
     padding-right: 17px;
     overflow-y: auto;

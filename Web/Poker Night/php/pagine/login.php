@@ -77,9 +77,11 @@
     }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang = "it">
     <head>
         <title>Login</title>
+        <meta charset = "utf-8">
+        <meta name = "author" content = "Sebastiano Pala">
         <link rel="stylesheet" href="../../CSS/Layout.css">
         <link rel="stylesheet" href="../../CSS/Login.css">
         <script>
@@ -130,7 +132,7 @@
                 <button id="change" class="menu_button">Crealo qui</button>
             </div>
             <nav id="menu">
-                <a href="/index.php" class="page_style">
+                <a href="/php/pagine/home.php" class="page_style">
                     <img  alt="clubs">
                     Torna alla home
                     <img  alt="diamonds">

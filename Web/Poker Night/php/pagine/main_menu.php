@@ -15,13 +15,13 @@
     unset($_SESSION['CREATOR']);
     unset($_SESSION['is_being_served']);
     if(!isset($_SESSION['username'])) {
-        header("Location: /index.php");
+        header("Location: /php/pagine/home.php");
         exit();
     }
     $player_info = getInfo($_SESSION['username'],"player");
     if(!$player_info){
         session_destroy();
-        header("Location: /index.php");
+        header("Location: /php/pagine/home.php");
         exit();
     }
     $_SESSION["soldi"]= $player_info['soldi'];
@@ -72,7 +72,7 @@
             $room_id=0;
             $room_already_exists=true;
 
-            if($_POST["room_type"] =="Sin"){ //se la stanza è singleplayer, vado subito alla pagina di gioco
+            if(isset($_POST["room_type"]) && $_POST["room_type"] =="Sin"){ //se la stanza è singleplayer, vado subito alla pagina di gioco
                 $_SESSION['ROOM_TYPE']="single";
                 $_SESSION['BOT_NUM'] = $_POST['num_players'];
                 $_SESSION['ROOM_ID'] ="-";
@@ -110,9 +110,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang = "it">
     <head>
         <title>Main Menu</title>
+        <meta charset = "utf-8">
+        <meta name = "author" content = "Sebastiano Pala">
         <link rel="stylesheet" href="/CSS/Layout.css">
         <link rel="stylesheet" href="/CSS/MainMenu.css">
         <script>

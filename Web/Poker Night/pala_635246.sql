@@ -40,15 +40,6 @@ CREATE TABLE `stanze` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stanze`
---
-
-LOCK TABLES `stanze` WRITE;
-/*!40000 ALTER TABLE `stanze` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stanze` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `utenti`
 --
 
@@ -68,11 +59,11 @@ CREATE TABLE `utenti` (
 -- Dumping data for table `utenti`
 --
 
-LOCK TABLES `utenti` WRITE;
+
 /*!40000 ALTER TABLE `utenti` DISABLE KEYS */;
-INSERT INTO `utenti` VALUES ('alessio','$2y$10$QqUSWBfhNa0TYkMSZqcoWO9F2k7n5HmXgcPPntchRilOMzIwyQpYu',72367,NULL),('bruno','$2y$10$EzoTzUJzvX1iVSSKW2Psp.v637nnSk63Gxf8wCeR9TYEuO7nmrQT2',2200,NULL),('enrico','$2y$10$rPfa//PPkme3zh96Ev4qVexqWkkGbr/KLxzvOr6taadtB2eNnEmXC',98298,NULL),('giorgio','$2y$10$VdlO9Da78xn4qZ/NHKgS3Ocw3fN01hIPRbqeLbPZoaaZjjPH4mawq',35242,NULL),('marco','$2y$10$KdB3SoztPp.pDTvNbFSmzui8WX8QTxoH/67qwzOJ6CP58snYuf5Wi',12556,NULL),('mario','$2y$10$HxqxEqinvK7qDQ2nXLeeZOEsB6bQcGDyDmRwRGXHrO3abKEpm1h4.',77322,NULL),('matteo','$2y$10$j00sE8RS0GhFG8aWZ3j1Te6r2yuvApknw/Jw6P4PzyhjHGGJKDLcG',0,NULL),('nanni','$2y$10$7VNCGEYkWwjQtB62LiGnJO2Q2HcghgGOH7764sWGNkxhDjpvczfEC',14432,NULL),('nora','$2y$10$qc1c37phmbEpE0XQ1zfqDOw40mHATikF9k7c.WzwxTCJg8uVRdVue',2453421,NULL),('osvaldo','$2y$10$UhJUblLvVJiF9DgUawFcFOazca6ewv3kUbkAtLf8RpJRCKNrLcrdO',54632,NULL),('seba','$2y$10$FXDQRtRazAcNcUKSHGjnjud4T9tch79H5N.8IIuszyaW16B4SnGVe',324778,NULL),('silvano','$2y$10$o4.X1zbAe2ECPZF/PUKwgOCUbqKYp3e3x4TbBAjoiTNQJwNNcmy0u',555676,NULL),('stefano','$2y$10$7RTRvMOSDfwOd5f3im/CmeCiXwFC8BBKBgGQM6d/kB1vs1M2wszem',86489,NULL),('stella','$2y$10$l0rs00nqvH0N5aqMFxVvn.D94ObY0oX8hvPDvVnkzQeEKgAgAZmRq',99876,NULL),('tomas','$2y$10$8cI4g5wd.KhAva7Tt649LOspnY4ifoW7PtEBz5HCMyIaJcCVFIaau',202242,NULL);
+INSERT INTO `utenti` VALUES ('alessio','$2y$10$QqUSWBfhNa0TYkMSZqcoWO9F2k7n5HmXgcPPntchRilOMzIwyQpYu',77569,NULL),('bruno','$2y$10$EzoTzUJzvX1iVSSKW2Psp.v637nnSk63Gxf8wCeR9TYEuO7nmrQT2',176493,NULL),('enrico','$2y$10$rPfa//PPkme3zh96Ev4qVexqWkkGbr/KLxzvOr6taadtB2eNnEmXC',88715,NULL),('giorgio','$2y$10$VdlO9Da78xn4qZ/NHKgS3Ocw3fN01hIPRbqeLbPZoaaZjjPH4mawq',35242,NULL),('lara','$2y$10$D4mOMYY1Bw7bU593iH.INOF.Q.et.p.qrhOhjuaH2HLEi/L251OoS',66260,NULL),('Lucia','$2y$10$gwjLsYWjujy2qYdzquULPO/2gAqsJwQxAat/o.VQM6m9SJeVSrCG2',17301,NULL),('marco','$2y$10$KdB3SoztPp.pDTvNbFSmzui8WX8QTxoH/67qwzOJ6CP58snYuf5Wi',12556,NULL),('mario','$2y$10$HxqxEqinvK7qDQ2nXLeeZOEsB6bQcGDyDmRwRGXHrO3abKEpm1h4.',77322,NULL),('matteo','$2y$10$j00sE8RS0GhFG8aWZ3j1Te6r2yuvApknw/Jw6P4PzyhjHGGJKDLcG',0,NULL),('nanni','$2y$10$7VNCGEYkWwjQtB62LiGnJO2Q2HcghgGOH7764sWGNkxhDjpvczfEC',14432,NULL),('nora','$2y$10$qc1c37phmbEpE0XQ1zfqDOw40mHATikF9k7c.WzwxTCJg8uVRdVue',2453421,NULL),('osvaldo','$2y$10$UhJUblLvVJiF9DgUawFcFOazca6ewv3kUbkAtLf8RpJRCKNrLcrdO',54632,NULL),('seba','$2y$10$FXDQRtRazAcNcUKSHGjnjud4T9tch79H5N.8IIuszyaW16B4SnGVe',167995,NULL),('silvano','$2y$10$o4.X1zbAe2ECPZF/PUKwgOCUbqKYp3e3x4TbBAjoiTNQJwNNcmy0u',555676,NULL),('stefano','$2y$10$7RTRvMOSDfwOd5f3im/CmeCiXwFC8BBKBgGQM6d/kB1vs1M2wszem',86489,NULL),('stella','$2y$10$l0rs00nqvH0N5aqMFxVvn.D94ObY0oX8hvPDvVnkzQeEKgAgAZmRq',99876,NULL),('tomas','$2y$10$8cI4g5wd.KhAva7Tt649LOspnY4ifoW7PtEBz5HCMyIaJcCVFIaau',202242,NULL);
 /*!40000 ALTER TABLE `utenti` ENABLE KEYS */;
-UNLOCK TABLES;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -83,4 +74,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-24 19:04:08
+-- Dump completed on 2025-09-04 16:06:17

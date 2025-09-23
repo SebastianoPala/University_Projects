@@ -12,6 +12,7 @@ async function requestJson(data){
         return json;
     }
 }
+
 function resetWindow(text){
     const title = document.getElementById('window_son');
     let hidewindow=false;
@@ -28,6 +29,7 @@ function resetWindow(text){
     menu_window.hidden=hidewindow;
     return hidewindow;
 }
+
 function printServerError(errormess){
     let p = document.getElementById('errmess');
     if(!p){
@@ -39,6 +41,7 @@ function printServerError(errormess){
     p.textContent=errormess;
     menu_window.hidden=false;
 }
+
 function checkFile(e){
     const file  = e.target.files[0];
     const path = document.getElementById('path');
@@ -105,6 +108,7 @@ function creaFinestraFoto(){
         preview.id="preview";
         preview.draggable=false;
         preview.src = "/Assets/layout/badimg.png";
+        preview.alt = "preview";
         new_container.appendChild(preview);
 
         const path_label = document.createElement('p');
@@ -137,6 +141,7 @@ function creaFinestraFoto(){
         menu_window.appendChild(form);
     }
 }
+
 async function creaFinestraTab(type){
     if(!resetWindow(type)){
         try{
@@ -151,6 +156,7 @@ async function creaFinestraTab(type){
         }
     }
 }
+
 async function creaFinestraStanza(){
     if(!resetWindow("CREA STANZA")){
         const form = document.createElement('form');
@@ -221,6 +227,7 @@ async function creaFinestraStanza(){
         menu_window.appendChild(form);
     }
 }
+
 async function creaFinestraJoin(){
     if(!resetWindow("UNISCITI")){
         const menu = document.createElement('form');
@@ -268,8 +275,6 @@ function costruisciTabella(dati,table_type){
 
         hidden_input = document.createElement('input');
         hidden_input.type="hidden";
-        hidden_input.required=true;
-        hidden_input.pattern="^[A-Z0-9]{6}$";
         hidden_input.name="ROOM_ID";
         scroll_container.appendChild(hidden_input);
     }
@@ -322,8 +327,6 @@ function costruisciTabella(dati,table_type){
     scroll_container.appendChild(table);
     menu_window.appendChild(scroll_container);
 }
-
-
 
 function inizializzaMenuPrincipale(){
     menu_window = document.getElementById('window');

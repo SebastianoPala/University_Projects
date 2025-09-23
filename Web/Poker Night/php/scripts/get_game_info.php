@@ -7,6 +7,7 @@
     require_once "../utility/singleplayer_management.php";
     //file che gestisce la logica della stanza e restituisce lo stato al chiamante
     
+    const MAX_AWAIT_TIME = 55;
     session_start();
     $is_error=false;
     $response['successo'] = true;
@@ -35,6 +36,7 @@
             echo json_encode($response);
             exit;
         }
+
         if(!$full_info['stanza'] && $full_info['soldi']==0 && isset($_SESSION['ROOM_ID'])){ //se ho finito i soldi posso comunque ricevere le mosse
             $room_info = getInfo($_SESSION['ROOM_ID'],"room");                              // nel caso venga rimosso da una stanza prima di aver
             if($room_info)                                                                  ///ricevuto la mossa di fine partita
@@ -45,9 +47,11 @@
             echo json_encode($response);
             exit;
         }
+
         $_SESSION['soldi']=$full_info['soldi']; // tengo i soldi aggiornati in caso di vincita
         $_SESSION['soldi_old']=$full_info['soldi'];
         
+        // SEZIONE INIZIALIZZAZIONE STANZA
         if(isset($_SESSION['CREATOR']) && $_SESSION['CREATOR']===true){ //primo messaggio del creatore. verifico se posso iniziare la partita
             if($full_info['giocatori']<=1){
                 setErrorResponse("STANZA VUOTA");
@@ -57,10 +61,10 @@
                     $room = new Room($full_info);
                     $_SESSION['MY_ID']= $room->addPlayer($_SESSION); //dovrei ottenere sempre 0
                     foreach($players as $player)
-                    $room->addPlayer($player);
-                    $room->getPot();
-                    $room->giveCards();
-                    $room->dealHouseCard();
+                        $room->addPlayer($player);
+                    
+                    $room->setEverythingUp();
+
                     if(($new_turn=setStateAndTurn($full_info['stanza'],$_SESSION['MY_ID'],$room))<0) // il creatore è sempre il giocatore 0 in teoria
                         setErrorResponse("IMPOSSIBILE AVVIARE LA PARTITA");
                 }else
@@ -77,18 +81,28 @@
         }
         unset($_SESSION['CREATOR']);
 
-        if(!$is_error && isset($_GET['info']) && !isset($_GET['move'])){
 
+
+        $is_hijacked = false;
+        $bad_move = true;
+
+        if(!$is_error && isset($_GET['info']) && !isset($_GET['move'])){
+            
             //SEZIONE INVIO INFORMAZIONI AL CLIENT
+            $bad_move = false;
 
             if($full_info['stato_partita']==="-"){
-                setErrorResponse("hold"); // errore "hold" indica che la stanza non è ancora stata inizializzata
-
+                setErrorResponse("hold"); // errore "hold" indica che la stanza non è ancora stata inizializzata                
             }else{
+
+                $turn_timestamp = new DateTime($full_info['turn_timestamp']);
+                $now = new DateTime();
+                $time_passed = $now->getTimestamp() - $turn_timestamp->getTimestamp();
+                
                 if($_GET['info']==="all"){ //con all si ottiene la lista dei giocatori e le proprie carte
 
                     $state=unserialize($full_info['stato_partita']);
-
+                    
                     $list=[]; //conterrà la lista dei giocatori
                     $pfps=[]; //conterrà i percorsi delle foto profilo
                     $who_folded = []; //conterrà chi ha foldato (utile per chi esce e rientra o fa da spettatore)
@@ -126,26 +140,31 @@
                         $response['deal'] = $state['h']; //carte del dealer
                         $response['list']= $list;
                         $response['pfps']= $pfps;
-
-                        $turn_timestamp = new DateTime($full_info['turn_timestamp']);
-                        $now = new DateTime();
-
-                        //quanto tempo è passato dall'ultimo cambio di turno
-                        $response['time']= $now->getTimestamp() - $turn_timestamp->getTimestamp();
+                        $response['time']= $time_passed; //quanto tempo è passato dall'ultimo cambio di turno
                     }
                 }
-                //se ho richiesto all, invio solo chi ha foldato, altrimenti le mosse
-                $response['moves']= $_GET['info'] !="all" ? readMoves($full_info['storia_mosse']) : $who_folded;
+                $response['moves']= $_GET['info'] !="all" ? readMoves($full_info['storia_mosse']) : $who_folded; //se ho richiesto all, invio solo chi ha foldato, altrimenti le mosse
                 $response['turn']=$full_info['turn'];
+                
+                if($time_passed>MAX_AWAIT_TIME && count($response['moves'])==0){
+                    $is_hijacked=true;
+                    hijackSession($full_info);
+                }
             } 
 
-        }else if(!$is_error &&  isset($_GET['move']) && !isset($_GET['info']) && isset($_SESSION['MY_ID']) && $full_info['turn'] === $_SESSION['MY_ID']){
-            
-            //SEZIONE DI GESTIONE MOSSE DEI GIOCATORI
+        }
 
+
+        if(!$is_error &&  isset($_GET['move']) && !isset($_GET['info']) && isset($_SESSION['MY_ID']) && $full_info['turn'] === $_SESSION['MY_ID']){
+            
+            $bad_move = false;
+            
             if($full_info['stato_partita']==="-"){
                 setErrorResponse("hold");
             }else{
+                
+                //SEZIONE DI GESTIONE MOSSE DEI GIOCATORI
+
                 $room = new Room($full_info); //carico la stanza
                 $player = $room->player_list[$_SESSION['MY_ID']];
                 $player->soldi = $_SESSION['soldi'];
@@ -157,7 +176,6 @@
                     echo json_encode($response);
                     exit;
                 }
-
                 $_SESSION['soldi'] = $player->soldi;
                 
                 //salvo la mossa nella storia
@@ -165,12 +183,13 @@
                 $moves_history->setNewMove($_SESSION['MY_ID'],$move);
                 
                 $status_outcome = checkGameStatus($room,$moves_history); //verifico come è cambiato lo stato dopo la mia mossa
-                $is_over = $status_outcome['over']; //is over indica se LA MANO è giunta al termine
 
-                $response['over']=false; //mentre response['over'] indica se la PARTITA si è conclusa
-                $alone = false; //alone è vero quando si è rimasti da soli nella stanza
+                $response['over']=false; //response['over'] indica se la PARTITA si è conclusa
+                $alone = false; //alone è true quando si è rimasti da soli nella stanza
 
-                if($is_over){
+
+                //SEZIONE FINE MANO
+                if($status_outcome['over']){ // status_outcome['over'] indica se LA MANO è giunta al termine
                     $winner = $room->checkWinner(); //guardo chi è il vincitore e perche ha vinto
                     $all_cards=$room->getAllCards(); //ottengo le carte da inviare ai giocatori
 
@@ -188,28 +207,25 @@
                         $players = getOtherPlayers($full_info['stanza']); //prendo i giocatori dentro la stanza con soldi >0 e prendo il piatto
                         if(!empty($players)){ 
                             $room = new Room();
-                            if($_SESSION['soldi']>0){ //mi aggiungo alla stanza solo se ho ancora soldi
+                            if($_SESSION['soldi']>0 && !$is_hijacked){ //mi aggiungo alla stanza solo se ho ancora soldi e nessuno ha fatto il turno al posto mio
                                 $_SESSION['MY_ID']= $room->addPlayer($_SESSION);
                             }
                             foreach($players as $player){
                                 $room->addPlayer($player);
                             }
                             if($room->first_unassigned_id>1){ //se ho aggiunto piu di un giocatore (me compreso),inizializzo la stanza
-                                $room->giveCards();
-                                $hcard = $room->dealHouseCard();
-                                $room->getPot();
+                                $room->setEverythingUp();
                             }else{
                                 $response['over']=true;
                             }
                         }else{
                             $response['over']=true;
                         }
-                            
                     }
-
                 }
 
-                //SEZIONE DI INVIO RISPOSTA AL CLIENT
+
+                //SEZIONE DI SALVATAGGIO STATO
 
                 //salvo lo stato, le mosse, setto il turno e aggiorno i soldi
                 $response['turn']=setStateAndTurn($full_info['stanza'],$_SESSION['MY_ID'],$room,$moves_history);
@@ -217,14 +233,19 @@
                 $response['moves']=$moves_history->getLastMoves();
 
                 //se sono da solo, esco dalla stanza
+                if($is_hijacked){
+                    esciStanza($_SESSION['username'],$_SESSION['ROOM_ID']);
+                    restoreSession(); // ritorno allo stato originale
+                }
+
                 if($alone || ($_SESSION['soldi'] == 0 && $response['over']==true)){
                     esciStanza($_SESSION['username'],$_SESSION['ROOM_ID']);
                     unset($_SESSION['ROOM_ID']);
                 }
                 
             }
-        }else
-            setErrorResponse("ERROR: BAD REQUEST");
+        }if($bad_move)
+            setErrorResponse("ERROR: BAD MOVE");
             
         echo json_encode($response);
         $_SESSION['is_being_served'] = false;

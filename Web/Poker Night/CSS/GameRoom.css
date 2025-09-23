@@ -10,7 +10,7 @@
     min-height: 650px;
     min-width: 650px;
     max-width: 850px;
-    background-image: url("../Assets/backgrounds/table_background.jpg");
+    background-image: url("/Assets/backgrounds/table_background.jpg");
     background-size: 120% 100%;
     background-position: center;
     background-repeat: no-repeat;

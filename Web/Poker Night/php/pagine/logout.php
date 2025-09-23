@@ -9,6 +9,6 @@
         esciStanza($_SESSION['username'],$_SESSION["ROOM_ID"]);
 
     session_destroy();
-    header("Location: /index.php");
+    header("Location: /php/pagine/home.php");
     exit();
 ?>

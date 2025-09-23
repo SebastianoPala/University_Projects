@@ -72,10 +72,6 @@
             $error = "Stanza piena";
         }else{
 
-            if($is_initialized)
-                $condition="NOT";
-            else
-                $condition="";
             $connection = db_connect(); //"prenoto" il posto incrementando "giocatori"
             $query = mysqli_prepare($connection,"UPDATE stanze SET giocatori = giocatori + 1 WHERE ID=? AND giocatori < `max giocatori` AND (turn IS NOT NULL) = ?"); // entro solo in stanze inizializzate a meno che io non sia il creatore
             mysqli_stmt_bind_param($query,"si",$room_id,$is_initialized);
@@ -96,9 +92,13 @@
     function esciStanza($username,$room){
         $return = true;
         $connection = db_connect();
-        $query = mysqli_prepare($connection,"UPDATE utenti SET stanza= NULL WHERE username = ?"); //rimuovo la stanza all utente
+        $query = mysqli_prepare($connection,"UPDATE utenti SET stanza= NULL WHERE username = ? AND stanza IS NOT NULL"); //rimuovo la stanza all utente
         mysqli_stmt_bind_param($query,"s",$username);
         mysqli_stmt_execute($query);
+
+        if(mysqli_stmt_affected_rows($query)<=0){ //l'utente non era in nessuna stanza, evito di decrementare il numero di giocatori
+            return false;
+        }
         
         $query = mysqli_prepare($connection,"UPDATE stanze SET giocatori = giocatori - 1 WHERE ID =? AND giocatori>1"); //riduco il numero di giocatori
         mysqli_stmt_bind_param($query,"s",$room);

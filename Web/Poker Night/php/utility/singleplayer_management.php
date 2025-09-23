@@ -1,8 +1,8 @@
 <?php
     require_once "../utility/game_management.php";
 
-    const FOLD_CHANCE = 20;
-    const BET_CHANCE = 30;
+    const FOLD_CHANCE = 15;
+    const BET_CHANCE = 35;
     
     $bot_names = ["Gwyn","Pursuer","Midir"]; //nomi statici dei bot
     $extra_bot = "Gael"; //nome extra, nel caso ci sia un giocatore omonimo
@@ -21,7 +21,7 @@
         if(isset($_GET['info']) && $_GET['info']==="all"){ //invio le informazioni necessarie alla creazione della stanza
             $list=[];
             $pfps=[];
-            foreach($room->player_list as $id => $pl){ //deserializzo solo i giocatori, il resto non mi serve
+            foreach($room->player_list as $id => $pl){
                 $list[$id] = [
                     'u'=>$pl->username,
                     's'=>$pl->soldi]; 
@@ -121,6 +121,7 @@
             
             $response['moves'] = $moves_history; //invio il contenitore con la storia delle mosse
         }
+        
         $_SESSION['soldi'] = $room->player_list[$my_id]->soldi;
         if($_SESSION['soldi'] == 0 || $alone){ //se ho finito i soldi oppure sono rimasto solo concludo la partita
             unset($_SESSION['stato_partita']); //distruggo lo stato della stanza

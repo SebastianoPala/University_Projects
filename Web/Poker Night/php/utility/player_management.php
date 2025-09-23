@@ -70,6 +70,7 @@
         mysqli_close($connection);
         return $info;
     }
+    
     function addRoomToPlayer($connection,$username,$room_id){ //aggiungo la stanza nella tabella degli utenti
         $result = true;
         $query = mysqli_prepare($connection,"UPDATE utenti SET stanza = ? WHERE username = ? AND stanza IS NULL");
