@@ -1,4 +1,4 @@
-This project involved the design and development of a full-stack, multi-player online poker website. The platform enables users to engage in poker games either in single-player mode against the CPU or in multi-player sessions with other users.
+This project (required for the "Progettazione Web" exam) involved the design and development of a full-stack, multi-player online poker website. The platform enables users to engage in poker games either in single-player mode against the CPU or in multi-player sessions with other users.
 
 FEATURES:
 
@@ -22,3 +22,5 @@ The application was built utilizing XAMPP as the local development environment. 
 
 
 The _PokerNight.rar contains the entire project.
+
+Grade: 30/30
