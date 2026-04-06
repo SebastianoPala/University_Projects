@@ -1,1 +1,0 @@
-This program was created to implement various cipher algorithms in assembly language, using an interface written in C++. It is still unfinished, as I have only implemented the Caesar and Affine ciphers. The 'Complete Cipher' is currently not implemented. In the future, I plan to add the remaining monoalphabetic and polyalphabetic ciphers.
