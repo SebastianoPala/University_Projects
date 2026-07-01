@@ -1,2 +1,3 @@
-# Personal_Projects
-This repository contains some of my coding projects.
+# University Projects
+This repository acts as the main hub for all of my University projects. Most of them can also be explored individually, as some have their own repository. 
+

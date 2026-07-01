@@ -1,1 +1,0 @@
-simple and short algorithm implementations done in preparation for the numerical analysis exam

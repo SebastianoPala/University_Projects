@@ -1,0 +1,160 @@
+NOME_STANZA
+Museo di storia BITTI
+
+STATO_OGGETTI //stato iniziale oggetti e locazioni
+LLLLLSSS|FLLLFFLFFLLFF
+
+OGGETTI
+21
+martello
+E'un semplice martello da lavoro. E' molto pesante, va tenuto con 2 mani.
+Il martello e' legato all' impalcatura con una **corda**. Non riesci a rompere la corda a mani nude, ma non sembra resistente al fuoco.
+0
+accendino corda
+Hai bruciato la corda, e ora puoi raccogliere il **martello**.
+
+lancia
+Una lancia di legno. e' molto lunga, puoi utilizzarla per raggiungere punti prima inaccessibili.
+Si trova dietro un vetro molto resistente. Non puoi a rompere il vetro a mani nude. Per poterla raggiungere hai bisogno di qualcosa di piu pesante.
+0
+martello vetrina
+Hai rotto la vetrina.
+
+accendino
+Un semplice accendino.
+L'accendino trova in un contenitore di vetro. Nel tappo c'e' scritto "SMETTI DI FUMARE", e inoltre sono presenti 2 fori che sembrano un altoparlante e un microfono.
+La scatola fa partire un messaggio vocale: "Per aprire la scatola, completare il seguente proverbio : "Il lupo perde il pelo ma non _______"
+il vizio
+La scatola si e' aperta.
+
+gemma
+Una gemma esagonale, di colore giallo.
+La gemma appare incustodita. Di fianco alla gemma c'e' una nota: "Qualcuno cambi il codice, lo dimentico sempre e non so leggere quei simboli strani sulla lastra di marmo"
+Appena provi a prendere la gemma questa viene bloccata da una sorta di meccanismo. Di fianco alla gemma e' spuntato un tastierino numerico. Inserisci il codice sul tastierino:
+118
+Il meccanismo e' stato disattivato.
+
+chiave
+Una chiave. Devi trovare la serratura corrispondente.
+Non puoi prenderla finche non ti occupi della **statua**.
+0
+gemma statua
+Gli occhi della statua si sono illuminati. La finestrella e' ora aperta.
+
+
+gettone rosso
+E'un gettone rosso, niente di piu.
+Non puoi prenderlo finche non apri la **cassaforte**...
+0
+chiave cassaforte
+Hai aperto la cassaforte.
+
+gettone blu
+E'un gettone blu, niente di piu.
+Hai bisogno di qualcosa per raggiungere il gettone, e' troppo in alto.
+0
+lancia gettone blu
+Con la lancia riesci ad arrivare per un pelo al **gettone blu**, e a staccarlo dal soffitto. Ora il **gettone blu** e' caduto e si trova sul pavimento.
+
+gettone giallo
+E'un gettone giallo, niente di piu.
+Se provi a prenderlo dovrai risolvere l'enigma del ++piedistallo++.
+L'enigma di Bruno Maggi e' il seguente: "se (k+k)/k = k, quanto vale k?"
+2
+Il piedistallo ti reputa degno di prendere il gettone giallo.
+
+
+0
+Ti trovi nella stanza principale del museo di storia di Bitti. Noti che ci sono dei lavori in corso, data la presenza di ++impalcature++. Di fronte a te c'e' una **statua** con un foro esagonale sul petto. In fondo alla stanza ci sono delle scale per andare al ++primo piano++, e una ++porta++ con la targa "SECURITY".
+0
+0
+0
+0
+
+corda
+La corda ha preso fuoco molto facilmente e ora e' solo cenere.
+Una semplice corda. sembra molto resistente agli sforzi, ma non al fuoco.
+0
+accendino corda
+0 
+
+statua
+La statua ha gli occhi illuminati, e ti sta guardando... La finestrella che conteneva la **chiave** e' aperta.
+La statua ha un foro esagonale sul petto. E' realizzata in marmo e ha una finestrella di vetro sul piedistallo contenente una **chiave**. Lo sguardo della statua ti mette a disagio.
+0
+gemma statua
+0
+
+
+impalcature
+La **corda** che bloccava il **martello** ormai e' solo cenere. Una delle impalcature ha una ++scala++ che porta alla seconda meta' del piano superiore.
+Le impalcature sono circondate da vari attrezzi da lavoro, tra cui un **martello**. Una delle impalcature ha una ++scala++ che porta alla seconda meta' del piano superiore.
+0
+accendino corda
+0
+
+scala
+Sei arrivato al primo piano, dal lato opposto di quella che sembra una barricata con su scritto "LAVORI IN CORSO". In questo lato del piano, e' presente una **vetrina** di esposizione, e un ++piedistallo++ su cui e' esposto un **gettone giallo**.
+0
+0
+0
+0
+
+piedistallo
+Sul piedistallo c'e' una piccola targa su cui c'e' scritto "Solo chi risolve l'enigma di Bruno Maggi e' degno di prendere il **gettone giallo**".
+0
+0
+0
+0
+
+vetrina
+La vetrina e' completamente rotta. Puoi prendere una **lancia** da uno dei manichini.
+Dietro la vetrina di esposizione si trovano dei manichini vestiti come uomini preistorici. Molti di loro hanno una **lancia** molto lunga.
+0
+martello vetrina
+0
+
+primo piano
+Sei arrivato al primo piano. Puoi accedere a solo meta' del piano, in quanto e' presente una barricata con su scritto "LAVORI IN CORSO" che blocca l'accesso alla seconda parte del piano. In questo lato puoi vedere una ++nota++ del museo lasciata per i visitatori, una **gemma** esagonale appesa al muro, e un **gettone blu** incollato al soffitto.
+0
+0
+0
+0
+
+porta
+Dietro la porta si trova l'ufficio della sicurezza. La stanza contiene dei ++monitor++ collegati alle telecamere, un posacenere con un **accendino** in una strana scatola, e una **cassaforte** con una serratura. Dietro la cassaforte c'e' un **interruttore**.
+0
+0
+0
+0
+
+cassaforte
+La cassaforte e' aperta. Il post-it non mentiva, c'e' davvero un **gettone rosso**
+Sulla cassaforte c'e' attaccato un post-it con su scritto **gettone rosso**.
+0
+chiave cassaforte
+0
+
+
+monitor
+Guardi i vari monitor, e vedi in uno di essi una stanza inaccessibile. In questa stanza c'e' una lastra di marmo con una scritta: "CODEX TESSERAE CAELUREAE EST CXVIII". Sembra scritta in latino.
+I monitor sono spenti. Devi trovare il modo di accenderli se vuoi usarli.
+0
+interruttore
+Ora i monitor sono accesi.
+
+nota
+La nota dice: GUIDA PER I NUMERI ROMANI: C == 100, X == 10, V == 5, I == 1.
+0
+0
+0
+0
+
+interruttore
+Un interruttore, sicuramente accende qualcosa.
+0
+0
+0
+0
+
+FINE FILE
