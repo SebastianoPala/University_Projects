@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="ASCII"?>
+<models:AdviseAtomicModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:models="http://www.mobius.illinois.edu/atomic/advise/" name="Car">
+  <aeg adviseModel="/">
+    <skillElements key="V2X Packet Crafting Skill">
+      <value name="V2X Packet Crafting Skill" codename="V2XPacketCraftingSkill" xpos="19" ypos="75" sourceArcs="//@aeg/@arcElements.4" attackExecutionGraph="//@aeg"/>
+    </skillElements>
+    <skillElements key="Spoofing Skill">
+      <value name="Spoofing Skill" codename="SpoofingSkill" xpos="356" ypos="16" sourceArcs="//@aeg/@arcElements.7 //@aeg/@arcElements.24" attackExecutionGraph="//@aeg"/>
+    </skillElements>
+    <skillElements key="Chip Flashing Skill">
+      <value name="Chip Flashing Skill" codename="ChipFlashingSkill" xpos="399" ypos="173" sourceArcs="//@aeg/@arcElements.21" attackExecutionGraph="//@aeg"/>
+    </skillElements>
+    <skillElements key="Data Extraction Skill">
+      <value name="Data Extraction Skill" codename="DataExtractionSkill" xpos="500" ypos="561" sourceArcs="//@aeg/@arcElements.14 //@aeg/@arcElements.15" attackExecutionGraph="//@aeg"/>
+    </skillElements>
+    <skillElements key="Injection Skill">
+      <value name="Injection Skill" codename="InjectionSkill" xpos="1138" ypos="115" sourceArcs="//@aeg/@arcElements.2" attackExecutionGraph="//@aeg"/>
+    </skillElements>
+    <knowledgeElements key="V2x Protocol Knowledge">
+      <value name="V2x Protocol Knowledge" codename="V2xProtocolKnowledge" useDefault="false" xpos="219" ypos="59" sourceArcs="//@aeg/@arcElements.6" attackExecutionGraph="//@aeg"/>
+    </knowledgeElements>
+    <knowledgeElements key="Car Model Knowledge">
+      <value name="Car Model Knowledge" codename="CarModelKnowledge" xpos="664" ypos="284" sourceArcs="//@aeg/@arcElements.19 //@aeg/@arcElements.20" attackExecutionGraph="//@aeg"/>
+    </knowledgeElements>
+    <knowledgeElements key="Message Format Knowledge">
+      <value name="Message Format Knowledge" codename="MessageFormatKnowledge" xpos="1222" ypos="122" sourceArcs="//@aeg/@arcElements.3" attackExecutionGraph="//@aeg"/>
+    </knowledgeElements>
+    <accessElements key="Proximity Network Access">
+      <value name="Proximity Network Access" codename="ProximityNetworkAccess" xpos="114" ypos="58" sourceArcs="//@aeg/@arcElements.5" attackExecutionGraph="//@aeg"/>
+    </accessElements>
+    <accessElements key="Compromised Gateway Access">
+      <value name="Compromised Gateway Access" codename="CompromisedGatewayAccess" xpos="173" ypos="292" sourceArcs="//@aeg/@arcElements.10" targetArcs="//@aeg/@arcElements.8 //@aeg/@arcElements.9" attackExecutionGraph="//@aeg"/>
+    </accessElements>
+    <accessElements key="Internal CAN Access">
+      <value name="Internal CAN Access" codename="InternalCANAccess" xpos="338" ypos="580" sourceArcs="//@aeg/@arcElements.12" targetArcs="//@aeg/@arcElements.11" attackExecutionGraph="//@aeg"/>
+    </accessElements>
+    <accessElements key="Remote Network Access">
+      <value name="Remote Network Access" codename="RemoteNetworkAccess" xpos="925" ypos="84" sourceArcs="//@aeg/@arcElements.0 //@aeg/@arcElements.1" attackExecutionGraph="//@aeg"/>
+    </accessElements>
+    <accessElements key="Internal Remote Access">
+      <value name="Internal Remote Access" codename="InternalRemoteAccess" xpos="827" ypos="494" sourceArcs="//@aeg/@arcElements.17 //@aeg/@arcElements.18" targetArcs="//@aeg/@arcElements.22 //@aeg/@arcElements.23" attackExecutionGraph="//@aeg"/>
+    </accessElements>
+    <stepElements key="Do Nothing">
+      <value name="Do Nothing" codename="DoNothing" editMask="15" attackExecutionGraph="//@aeg" height="0" width="0" cost="return 0;">
+        <outcomes key="Nothing">
+          <value name="Nothing" probability="return 1;" detection="return 0;" effects=""/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>return 1;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <stepElements key="Send V2X Malicious Messages">
+      <value name="Send V2X Malicious Messages" codename="SendV2XMaliciousMessages" xpos="111" ypos="175" sourceArcs="//@aeg/@arcElements.8" targetArcs="//@aeg/@arcElements.4 //@aeg/@arcElements.5 //@aeg/@arcElements.6" attackExecutionGraph="//@aeg" width="150" preconditions="return CompromisedGatewayAccess->Mark() == 0 &amp;&amp; ProximityNetworkAccess->Mark() &amp;&amp; V2xProtocolKnowledge->Mark() &amp;&amp; V2XPacketCraftingSkill->Mark() >= v2XPacketCraftingSkillThreshold;" cost="return 10;">
+        <outcomes key="Success">
+          <value name="Success" probability="return 0.4;" detection="return 0.35;" effects="CompromisedGatewayAccess->Mark() = true;"/>
+        </outcomes>
+        <outcomes key="Failure">
+          <value name="Failure" probability="return 0.6;" detection="return 0.45;" effects=""/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>return 3;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <stepElements key="Inject Malicious CAN Messages">
+      <value name="Inject Malicious CAN Messages" codename="InjectMaliciousCANMessages" xpos="237" ypos="453" sourceArcs="//@aeg/@arcElements.11" targetArcs="//@aeg/@arcElements.7 //@aeg/@arcElements.10" attackExecutionGraph="//@aeg" width="150" preconditions="return InternalCANAccess->Mark() == 0 &amp;&amp; CompromisedGatewayAccess->Mark() &amp;&amp;SpoofingSkill->Mark() >= CANSpoofingSkillThreshold;" cost="return 10;">
+        <outcomes key="Failure">
+          <value name="Failure" probability="return 0.25;" detection="return 0.2;" effects=""/>
+        </outcomes>
+        <outcomes key="Success">
+          <value name="Success" probability="return 0.75;" detection="return 0.15;" effects="InternalCANAccess->Mark() = true;"/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>return 2;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <stepElements key="Extract Data Via CAN Bus">
+      <value name="Extract Data Via CAN Bus" codename="ExtractDataViaCANBus" xpos="335" ypos="687" sourceArcs="//@aeg/@arcElements.13" targetArcs="//@aeg/@arcElements.12 //@aeg/@arcElements.14" attackExecutionGraph="//@aeg" width="150" preconditions="return StealPrivateData->Mark() == 0 &amp;&amp; InternalCANAccess->Mark() &amp;&amp; DataExtractionSkill->Mark() >= CANExtractionSkillThreshold; " cost="return 5;">
+        <outcomes key="Success">
+          <value name="Success" probability="return 0.9;" detection="return 0.1;" effects="StealPrivateData->Mark() = 1;"/>
+        </outcomes>
+        <outcomes key="Failure">
+          <value name="Failure" probability="return 0.1;" detection="return 0.30;" effects=""/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>return 2;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <stepElements key="Impersonate OEM">
+      <value name="Impersonate OEM" codename="ImpersonateOEM" xpos="784" ypos="243" sourceArcs="//@aeg/@arcElements.22" targetArcs="//@aeg/@arcElements.0 //@aeg/@arcElements.20 //@aeg/@arcElements.24" attackExecutionGraph="//@aeg" width="150" preconditions="return InternalRemoteAccess->Mark() == 0 &amp;&amp; CarModelKnowledge->Mark() &amp;&amp; RemoteNetworkAccess->Mark() &amp;&amp; SpoofingSkill->Mark() >= OEMSpoofingSkillThreshold;" cost="return 30;">
+        <outcomes key="Outcome 1">
+          <value name="Success" probability="return 0.7;" detection="return 0.1;" effects="InternalRemoteAccess->Mark() = true;"/>
+        </outcomes>
+        <outcomes key="Failure">
+          <value name="Failure" probability="return 0.3;" detection="return 0.1;" effects=""/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>return 5;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <stepElements key="Inject Tampered Binary">
+      <value name="Inject Tampered Binary" codename="InjectTamperedBinary" xpos="1014" ypos="274" sourceArcs="//@aeg/@arcElements.23" targetArcs="//@aeg/@arcElements.1 //@aeg/@arcElements.2 //@aeg/@arcElements.3" attackExecutionGraph="//@aeg" width="150" preconditions="return InternalRemoteAccess->Mark() == 0 &amp;&amp; MessageFormatKnowledge->Mark() &amp;&amp; RemoteNetworkAccess->Mark() &amp;&amp; InjectionSkill->Mark() >= injectionSkillThreshold;" cost="return 20;">
+        <outcomes key="Outcome 1">
+          <value name="Success" probability="return 0.75;" detection="return 0.3;" effects="InternalRemoteAccess->Mark() = true;"/>
+        </outcomes>
+        <outcomes key="Failure">
+          <value name="Failure" probability="return 0.25;" detection="return 0.3;" effects=""/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>return 7;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <stepElements key="Extract Data Remotely">
+      <value name="Extract Data Remotely" codename="ExtractDataRemotely" xpos="648" ypos="675" sourceArcs="//@aeg/@arcElements.16" targetArcs="//@aeg/@arcElements.15 //@aeg/@arcElements.17" attackExecutionGraph="//@aeg" width="150" preconditions="return StealPrivateData->Mark() == 0 &amp;&amp; InternalRemoteAccess->Mark() &amp;&amp; DataExtractionSkill->Mark() >= remoteExtractionSkillThreshold;" cost="return 15;">
+        <outcomes key="Outcome 1">
+          <value name="Success" probability="return 0.5;" detection="return 0.3;" effects="StealPrivateData->Mark() = true;"/>
+        </outcomes>
+        <outcomes key="Failure">
+          <value name="Failure" probability="return 0.5;" detection="return 0.6;" effects=""/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>return 3;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <stepElements key="Reflash Gateway Chip">
+      <value name="Reflash Gateway Chip" codename="ReflashGatewayChip" xpos="526" ypos="399" sourceArcs="//@aeg/@arcElements.9" targetArcs="//@aeg/@arcElements.18 //@aeg/@arcElements.19 //@aeg/@arcElements.21" attackExecutionGraph="//@aeg" width="150" preconditions="return CompromisedGatewayAccess->Mark() == 0 &amp;&amp; InternalRemoteAccess->Mark() &amp;&amp; CarModelKnowledge->Mark() &amp;&amp; ChipFlashingSkill->Mark() >= chipFlashingSkillThreshold;" cost="if(ChipFlashingSkill->Mark() &lt; FlashingSkillExpertise)&#xA;&#x9;&#x9;&#x9;return 35;&#xA;else&#xA;&#x9;&#x9;&#x9;return 15;">
+        <outcomes key="Outcome 1">
+          <value name="Success" probability="if(ChipFlashingSkill->Mark() &lt; FlashingSkillExpertise)&#xA;&#x9;&#x9;&#x9;return 0.7;&#xA;else&#xA;&#x9;&#x9;&#x9;return 0.9;" detection="if(ChipFlashingSkill->Mark() &lt; FlashingSkillExpertise)&#xA;&#x9;&#x9;&#x9;return 0.3;&#xA;else&#xA;&#x9;&#x9;&#x9;return 0.1;" effects="CompromisedGatewayAccess->Mark() = true;"/>
+        </outcomes>
+        <outcomes key="Failure">
+          <value name="Failure" probability="if(ChipFlashingSkill->Mark() &lt; FlashingSkillExpertise)&#xA;&#x9;&#x9;&#x9;return 0.3;&#xA;else&#xA;&#x9;&#x9;&#x9;return 0.1;" detection="if(ChipFlashingSkill->Mark() &lt; FlashingSkillExpertise)&#xA;&#x9;&#x9;&#x9;return 0.3;&#xA;else&#xA;&#x9;&#x9;&#x9;return 0.25;" effects=""/>
+        </outcomes>
+        <timing distributionType="Deterministic">
+          <parameters>if(ChipFlashingSkill->Mark() &lt; FlashingSkillExpertise)
+			return 9;
+else
+			return 5;</parameters>
+        </timing>
+      </value>
+    </stepElements>
+    <goalElements key="Steal Private Data">
+      <value name="Steal Private Data" codename="StealPrivateData" xpos="523" ypos="741" targetArcs="//@aeg/@arcElements.13 //@aeg/@arcElements.16" attackExecutionGraph="//@aeg" width="75"/>
+    </goalElements>
+    <arcElements sourceName="Remote Network Access" targetName="Step 13" targetType="Step"/>
+    <arcElements sourceName="Remote Network Access" targetName="Step 14" targetType="Step"/>
+    <arcElements sourceName="Injection Skill" targetName="Step 14" sourceType="Skill" targetType="Step"/>
+    <arcElements sourceName="Message Format Knowledge" targetName="Step 14" sourceType="Knowledge" targetType="Step"/>
+    <arcElements sourceName="V2X Packet Crafting Skill" targetName="Send V2X Malicious Messages" sourceType="Skill" targetType="Step"/>
+    <arcElements sourceName="Proximity Network Access" targetName="Send V2X Malicious Messages" targetType="Step"/>
+    <arcElements sourceName="V2x Protocol Knowledge" targetName="Send V2X Malicious Messages" sourceType="Knowledge" targetType="Step"/>
+    <arcElements sourceName="Spoofing Skill" targetName="Inject Malicious CAN Messages" sourceType="Skill" targetType="Step"/>
+    <arcElements sourceName="Send V2X Malicious Messages" targetName="Compromised Gateway Access" sourceType="Step"/>
+    <arcElements sourceName="Step 10" targetName="Compromised Gateway Access" sourceType="Step"/>
+    <arcElements sourceName="Compromised Gateway Access" targetName="Inject Malicious CAN Messages" targetType="Step"/>
+    <arcElements sourceName="Inject Malicious CAN Messages" targetName="Internal CAN Access" sourceType="Step"/>
+    <arcElements sourceName="Internal CAN Access" targetName="Extract Data Via CAN Bus" targetType="Step"/>
+    <arcElements sourceName="Extract Data Via CAN Bus" targetName="Steal Private Data" sourceType="Step" targetType="Goal"/>
+    <arcElements sourceName="Data Extraction Skill" targetName="Extract Data Via CAN Bus" sourceType="Skill" targetType="Step"/>
+    <arcElements sourceName="Data Extraction Skill" targetName="Step 9" sourceType="Skill" targetType="Step"/>
+    <arcElements sourceName="Step 9" targetName="Steal Private Data" sourceType="Step" targetType="Goal"/>
+    <arcElements sourceName="Internal Remote Access" targetName="Step 9" targetType="Step"/>
+    <arcElements sourceName="Internal Remote Access" targetName="Reflash Gateway Chip" targetType="Step"/>
+    <arcElements sourceName="Car Model Knowledge" targetName="Step 10" sourceType="Knowledge" targetType="Step"/>
+    <arcElements sourceName="Car Model Knowledge" targetName="Step 13" sourceType="Knowledge" targetType="Step"/>
+    <arcElements sourceName="Chip Flashing Skill" targetName="Step 10" sourceType="Skill" targetType="Step"/>
+    <arcElements sourceName="Step 13" targetName="Internal Remote Access" sourceType="Step"/>
+    <arcElements sourceName="Step 14" targetName="Internal Remote Access" sourceType="Step"/>
+    <arcElements sourceName="Spoofing Skill" targetName="Step 13" sourceType="Skill" targetType="Step"/>
+  </aeg>
+  <adversary name="Adversary" codename="Adversary" horizon="4" detectionSW="0.3" payoffSW="0.6">
+    <accessInit key="Proximity Network Access" value="hasProximityAccess"/>
+    <accessInit key="Remote Network Access" value="hasRemoteNetworkAccess"/>
+    <goalInit key="Steal Private Data" value="0"/>
+    <goalPayoff key="Steal Private Data" value="1000"/>
+    <knowledgeInit key="Message Format Knowledge" value="hasMessageFormatKnowledge"/>
+    <knowledgeInit key="V2x Protocol Knowledge" value="hasV2XProtocolKnowledge"/>
+    <knowledgeInit key="Car Model Knowledge" value="hasCarModelKnowledge"/>
+    <skillInit key="Data Extraction Skill" value="dataExtractionSkillLevel"/>
+    <skillInit key="Injection Skill" value="injectionSkillLevel"/>
+    <skillInit key="Chip Flashing Skill" value="chipFlashingSkillLevel"/>
+    <skillInit key="Spoofing Skill" value="spoofingSkillLevel"/>
+    <skillInit key="V2X Packet Crafting Skill" value="v2XPacketCraftingSkillLevel"/>
+  </adversary>
+</models:AdviseAtomicModel>

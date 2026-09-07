@@ -59,4 +59,4 @@ If no port is specified, the server defaults to port `8080`.
 ## Authors
 
 - Sebastiano Pala
-- Eleonora Sgorbini
+- Eleonora Sgorbini ( [@ele239](https://github.com/ele239) )

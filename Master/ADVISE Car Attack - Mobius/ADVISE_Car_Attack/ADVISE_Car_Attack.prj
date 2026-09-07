@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<models:Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:models="http://www.mobius.illinois.edu/projects" name="ADVISE_Car_Attack" author="student" creationDate="2026-08-31T22:31:02.910+0200" lastSavedVersion="2.5.10.201907151645">
+  <atomic key="Car">
+    <value name="Car" type="ADVISE Model"/>
+  </atomic>
+  <reward key="CarReward">
+    <value name="CarReward" category="Reward" type="Performance Variables Model"/>
+  </reward>
+  <study key="CarStudy">
+    <value name="CarStudy" category="Study" type="Range Study"/>
+  </study>
+  <solver key="CarSim">
+    <value name="CarSim" category="Solver" type="Simulator"/>
+  </solver>
+  <globalVariable name="v2XPacketCraftingSkillThreshold"/>
+  <globalVariable name="v2XPacketCraftingSkillLevel"/>
+  <globalVariable name="hasProximityAccess" type="Bool"/>
+  <globalVariable name="hasRemoteNetworkAccess" type="Bool"/>
+  <globalVariable name="hasV2XProtocolKnowledge" type="Bool"/>
+  <globalVariable name="hasCarModelKnowledge" type="Bool"/>
+  <globalVariable name="hasMessageFormatKnowledge" type="Bool"/>
+  <globalVariable name="spoofingSkillLevel"/>
+  <globalVariable name="injectionSkillLevel"/>
+  <globalVariable name="chipFlashingSkillLevel"/>
+  <globalVariable name="dataExtractionSkillLevel"/>
+  <globalVariable name="CANSpoofingSkillThreshold"/>
+  <globalVariable name="OEMSpoofingSkillThreshold"/>
+  <globalVariable name="CANExtractionSkillThreshold"/>
+  <globalVariable name="remoteExtractionSkillThreshold"/>
+  <globalVariable name="injectionSkillThreshold"/>
+  <globalVariable name="chipFlashingSkillThreshold"/>
+  <globalVariable name="FlashingSkillExpertise"/>
+</models:Project>
