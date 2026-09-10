@@ -21,4 +21,4 @@ The project simulates three distinct attacker mindsets to observe how varying co
 
 ## Authors
 This project was made for the Dependable and Distributed Systems exams, together with my colleague Eleonora Sgorbini ( [@ele239](https://github.com/ele239) )
-Grade: Pending
+Grade: 30
